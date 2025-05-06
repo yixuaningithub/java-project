@@ -29,11 +29,10 @@ public class ScoreService {
     }
 
     public List<PlayerScore> getTopScores() {
-        return repository.findTop10ByOrderByScoreDesc();
+        return repository.findTop10ScoresNative();
     }
 
     public void clearAllScores() {
         repository.deleteAll();
     }
 }
-
