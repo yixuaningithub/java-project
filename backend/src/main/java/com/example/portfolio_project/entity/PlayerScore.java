@@ -15,8 +15,8 @@ public class PlayerScore {
     private String username;
     private int score;
 
-    @Column(nullable = false)
-    private LocalDateTime timestamp;
+    @Column(name = "timestamp", nullable = false)
+    private LocalDateTime timestamp = LocalDateTime.now();
 
     public Long getId() {
         return id;
@@ -49,6 +49,4 @@ public class PlayerScore {
     public void setTimestamp(LocalDateTime timestamp) {
         this.timestamp = timestamp;
     }
-
-    // constructor, getter, setter ...
 }
