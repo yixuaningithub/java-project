@@ -170,7 +170,7 @@ const staticBallY = ref(250);
 const ballX = ref(window.innerWidth / 2);
 const ballY = ref(0);
 
-const API_URL = 'http://localhost:8080/api/scores';
+const API_URL = import.meta.env.VITE_API_URL
 
 let powerInterval = null;
 let countdownInterval = null;
@@ -286,21 +286,28 @@ const triggerBallAnimation = () => {
 const submitScore = async () => {
   if (!playerName.value || hasSubmitted.value) return;
 
-  await fetch(API_URL, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      username: playerName.value,
-      score: score.value,
-    })
-  });
+  try {
+    await fetch(API_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        username: playerName.value,
+        score: score.value,
+      })
+    });
 
-  const res = await fetch(API_URL);
-  const data = await res.json();
-  leaderboard.value = data;
-  showLeaderboard.value = true;
-  hasSubmitted.value = true;
+    const res = await fetch(API_URL);
+    const data = await res.json();
+    leaderboard.value = data;
+    showLeaderboard.value = true;
+    hasSubmitted.value = true;
+
+  } catch (err) {
+    console.error("Failed to submit or fetch scores:", err);
+    alert("Error submitting score. Please try again.");
+  }
 };
+
 
 const resetGame = () => {
   clearInterval(countdownInterval);
