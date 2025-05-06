@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="">
+<head>
+    <title>Basketball Game</title>
+    <style>
+        body { font-family: sans-serif; text-align: center; padding-top: 50px; }
+        #powerBar {
+          width: 300px; height: 30px; background: lightgray; margin: 20px auto;
+          border-radius: 10px; overflow: hidden;
+        }
+        #fill {
+          height: 100%; width: 0%; background: orange; transition: width 0.1s;
+        }
+    </style>
+</head>
+<body>
+
+<h1>🏀 Basketball Game</h1>
+
+<div id="powerBar"><div id="fill"></div></div>
+<button id="shootBtn">Hold to Shoot</button>
+<p id="scoreText"></p>
+
+<h2>🏆 Leaderboard</h2>
+<ul id="leaderboard"></ul>
+
+<script>
+    const fill = document.getElementById('fill');
+    const btn = document.getElementById('shootBtn');
+    const scoreText = document.getElementById('scoreText');
+    let power = 0, interval;
+
+    btn.addEventListener('mousedown', () => {
+      power = 0;
+      interval = setInterval(() => {
+        if (power < 100) {
+          power += 1;
+          fill.style.width = power + '%';
+        }
+      }, 10);
+    });
+
+    btn.addEventListener('mouseup', () => {
+      clearInterval(interval);
+      fill.style.width = '0%';
+
+      const score = Math.floor(power + Math.random() * 10); // 模擬得分
+      scoreText.innerText = `You scored ${score} points!`;
+
+      const data = {
+        username: "Player1",
+        score: score,
+        timestamp: new Date().toISOString()
+      };
+
+      fetch('/api/score', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      }).then(() => {
+        loadLeaderboard();
+      });
+    });
+
+    function loadLeaderboard() {
+      fetch('/api/leaderboard')
+        .then(res => res.json())
+        .then(data => {
+          const list = document.getElementById('leaderboard');
+          list.innerHTML = '';
+          data.forEach(item => {
+            const li = document.createElement('li');
+            li.innerText = `${item.username}: ${item.score} pts`;
+            list.appendChild(li);
+          });
+        });
+    }
+
+    loadLeaderboard(); // 初始載入
+</script>
+</body>
+</html>
