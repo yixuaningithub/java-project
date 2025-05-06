@@ -289,7 +289,7 @@ const triggerBallAnimation = () => {
 
 const submitScore = async () => {
   if (!playerName.value || hasSubmitted.value) return;
-
+  hasSubmitted.value = true;
   try {
     await fetch(API_URL, {
       method: 'POST',
@@ -304,7 +304,6 @@ const submitScore = async () => {
     const data = await res.json();
     leaderboard.value = data;
     showLeaderboard.value = true;
-    hasSubmitted.value = true;
 
   } catch (err) {
     console.error("Failed to submit or fetch scores:", err);
