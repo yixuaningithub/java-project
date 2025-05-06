@@ -144,7 +144,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted, nextTick } from 'vue';
+import { ref, onMounted, onUnmounted, nextTick, watch } from 'vue';
 
 const power = ref(0);
 const charging = ref(false);
@@ -174,6 +174,10 @@ const API_URL = import.meta.env.VITE_API_URL
 
 let powerInterval = null;
 let countdownInterval = null;
+
+watch(showModal, (val) => {
+  if (val) loadLeaderboard();
+});
 
 const startGame = () => {
   hasStarted.value = true;
@@ -323,6 +327,15 @@ const resetGame = () => {
   hasSubmitted.value = false;
 };
 
+const loadLeaderboard = async () => {
+  try {
+    const res = await fetch(`${API_URL}?t=${Date.now()}`);
+    leaderboard.value = await res.json();
+  } catch (err) {
+    console.error("Failed to load leaderboard:", err);
+  }
+};
+
 onMounted(() => {
   nextTick(() => {
     const btn = document.querySelector(".rounded-full.text-xl");
@@ -332,6 +345,7 @@ onMounted(() => {
       staticBallY.value = window.innerHeight - rect.top + 30;
     }
   });
+  loadLeaderboard();
 });
 
 onUnmounted(() => {
