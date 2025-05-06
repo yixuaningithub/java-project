@@ -5,7 +5,7 @@ import com.example.portfolio_project.repository.PlayerScoreRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.concurrent.locks.ReentrantLock;
-
+import java.util.Optional;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -18,11 +18,23 @@ public class ScoreService {
     public PlayerScore saveScore(String username, int score) {
         lock.lock();
         try {
-            PlayerScore ps = new PlayerScore();
-            ps.setUsername(username);
-            ps.setScore(score);
-            ps.setTimestamp(LocalDateTime.now());
-            return repository.save(ps);
+            Optional<PlayerScore> existing = repository.findByUsername(username);
+            if (existing.isPresent()) {
+                PlayerScore oldScore = existing.get();
+                if (score > oldScore.getScore()) {
+                    oldScore.setScore(score);
+                    oldScore.setTimestamp(LocalDateTime.now());
+                    return repository.save(oldScore);
+                } else {
+                    return oldScore;
+                }
+            } else {
+                PlayerScore newScore = new PlayerScore();
+                newScore.setUsername(username);
+                newScore.setScore(score);
+                newScore.setTimestamp(LocalDateTime.now());
+                return repository.save(newScore);
+            }
         } finally {
             lock.unlock();
         }
