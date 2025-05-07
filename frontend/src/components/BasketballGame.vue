@@ -1,8 +1,10 @@
 <template>
   <div class="flex flex-col items-center justify-end h-screen bg-white relative overflow-hidden">
     <h1
-      class="text-4xl font-extrabold absolute top-4 left-1/2 transform -translate-x-1/2 
-            bg-gradient-to-r from-orange-400 via-yellow-400 to-red-500 text-transparent bg-clip-text animate-gradient"
+      class="absolute top-4 left-1/2 transform -translate-x-1/2 
+            text-[clamp(1.5rem,5vw,3rem)] font-extrabold 
+            bg-gradient-to-r from-orange-400 via-yellow-400 to-red-500 
+            text-transparent bg-clip-text animate-gradient"
     >
       Basketball Game
     </h1>
@@ -195,34 +197,51 @@ const startGame = () => {
   }, 1000);
 };
 
+let lastFrameTime = 0;
+let animationFrameId = null;
+const CHARGE_CYCLE_TIME = 2000;
+const MAX_POWER = 100;
+
+const animatePower = (timestamp) => {
+  if (!charging.value) return;
+
+  if (!lastFrameTime) lastFrameTime = timestamp;
+  const elapsed = timestamp - lastFrameTime;
+  lastFrameTime = timestamp;
+
+  const delta = (MAX_POWER * 2 * elapsed) / CHARGE_CYCLE_TIME;
+  power.value += chargingDirection.value * delta;
+
+  if (power.value >= MAX_POWER) {
+    power.value = MAX_POWER;
+    chargingDirection.value = -1;
+  } else if (power.value <= 0) {
+    power.value = 0;
+    chargingDirection.value = 1;
+  }
+
+  animationFrameId = requestAnimationFrame(animatePower);
+};
+
 const startCharging = () => {
   if (timeLeft.value === 0 || isAnimating.value) return;
   charging.value = true;
   chargingDirection.value = 1;
-
-  powerInterval = setInterval(() => {
-    power.value += chargingDirection.value;
-
-    if (power.value >= 100) {
-      power.value = 100;
-      chargingDirection.value = -1;
-    } else if (power.value <= 0) {
-      power.value = 0;
-      chargingDirection.value = 1;
-    }
-  }, 10);
+  lastFrameTime = 0;
+  animationFrameId = requestAnimationFrame(animatePower);
 };
 
 const stopCharging = () => {
   if (!charging.value || timeLeft.value === 0) return;
   charging.value = false;
-  clearInterval(powerInterval);
+  cancelAnimationFrame(animationFrameId);
   chargingDirection.value = 1;
   isPerfect.value = power.value === 100;
   isBonus.value = power.value >= 95 && power.value < 100;
   powerSuccessHighlight.value = power.value >= 90;
   triggerBallAnimation();
 };
+
 
 const triggerBallAnimation = () => {
   isAnimating.value = true;
@@ -350,9 +369,9 @@ onMounted(() => {
 });
 
 onUnmounted(() => {
-  clearInterval(powerInterval);
+  cancelAnimationFrame(animationFrameId);
   clearInterval(countdownInterval);
-  clearInterval(powerInterval)
+
 });
 </script>
 
