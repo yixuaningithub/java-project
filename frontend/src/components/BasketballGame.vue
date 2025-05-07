@@ -67,10 +67,12 @@
               flex items-center justify-center 
               shadow-lg hover:shadow-xl 
               transition-transform duration-200 hover:scale-105 active:scale-95
-              cursor-pointer"
+              cursor-pointer select-none"
         @mousedown="startCharging"
         @mouseup="stopCharging"
         @mouseleave="stopCharging"
+        @touchstart.prevent="startCharging"
+        @touchend.prevent="stopCharging"
       >
         Shoot
       </div>
