@@ -261,7 +261,7 @@ const triggerBallAnimation = () => {
 
   const totalFrames = 60;
   const peakFrame = 30;
-  const g = 0.5;
+  const g = window.innerHeight / 3000;
 
   let targetX, targetY;
 
@@ -276,9 +276,9 @@ const triggerBallAnimation = () => {
     const targetY_px = hoopRect.top + (50 / 150) * hoopRect.height;
     targetY = window.innerHeight - targetY_px;
   }
-
+  const peakY = targetY + window.innerHeight * 0.1;
   const vx = (targetX - startX) / peakFrame;
-  const vy = (targetY - startY) / peakFrame + 0.5 * g * peakFrame;
+  const vy = (peakY - startY) / peakFrame + 0.5 * g * peakFrame;
 
   let frame = 0;
 
