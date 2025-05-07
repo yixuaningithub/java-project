@@ -260,6 +260,8 @@ const triggerBallAnimation = () => {
   const hoopRect = hoop.getBoundingClientRect();
 
   const totalFrames = 60;
+  const peakFrame = 30;
+  const g = 0.5;
 
   let targetX, targetY;
 
@@ -274,18 +276,16 @@ const triggerBallAnimation = () => {
     const targetY_px = hoopRect.top + (50 / 150) * hoopRect.height;
     targetY = window.innerHeight - targetY_px;
   }
-  const peakY = Math.min(startY + 120, window.innerHeight - 150);
-  const g = 0.5;
-  const vx = (targetX - startX) / totalFrames;
-  const vyInitial = -( (peakY - startY) / (totalFrames / 2) - 0.5 * g * (totalFrames / 2) );
 
+  const vx = (targetX - startX) / peakFrame;
+  const vy = (targetY - startY) / peakFrame + 0.5 * g * peakFrame;
 
   let frame = 0;
 
   const animate = () => {
     const t = frame;
     ballX.value = startX + vx * t;
-    ballY.value = startY + vyInitial * t + 0.5 * g * t * t;
+    ballY.value = startY + vy * t - 0.5 * g * t ** 2;
 
     if (frame < totalFrames) {
       frame++;
