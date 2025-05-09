@@ -16,6 +16,10 @@
         <rect x="85" y="72" width="30" height="8" fill="#555" rx="2"/>
       </svg>
     </div>
+    <div>
+      id="hoop-center"
+      class="absolute top-[12vh] left-1/2 transform -translate-x-1/2 w-4 h-4 bg-transparent z-10 pointer-events-none"
+    </div>
 
     <img
       v-if="!showBall"
@@ -258,8 +262,6 @@ const triggerBallAnimation = () => {
 
   // const hoop = document.getElementById('hoop');
   // const hoopRect = hoop.getBoundingClientRect();
-  const hoopEl = document.getElementById('hoop');
-  const hoopRect = hoopEl.getBoundingClientRect();
 
   const totalFrames = 60;
   const peakFrame = 30;
@@ -268,10 +270,10 @@ const triggerBallAnimation = () => {
   let targetX, targetY;
 
   if (isSuccess.value) {
-    const hoopCenterX = hoopRect.left + hoopRect.width * (100 / 200); // x=100 in SVG
-    const hoopCenterY_px = hoopRect.top + hoopRect.height * (50 / 150); // y=50 in SVG
-    targetX = hoopCenterX;
-    targetY = window.innerHeight - hoopCenterY_px;
+    const targetEl = document.getElementById('hoop-center');
+    const targetRect = targetEl.getBoundingClientRect();
+    targetX = targetRect.left + targetRect.width / 2;
+    targetY = window.innerHeight - (targetRect.top + targetRect.height / 2);
     // targetX = hoopRect.left + (100 / 200) * hoopRect.width;
     // const targetY_px = hoopRect.top + (50 / 150) * hoopRect.height;
     // targetY = window.innerHeight - targetY_px;
