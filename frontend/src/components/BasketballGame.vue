@@ -10,7 +10,7 @@
     </h1>
     <div
       id="hoop"
-      class="absolute top-[8vh] left-1/2 transform -translate-x-1/2 w-[28vw] max-w-[140px] h-[100px] bg-transparent z-10 flex items-center justify-center"
+      class="absolute top-[80px] left-1/2 transform -translate-x-1/2 w-[28vw] max-w-[140px] h-[100px] bg-transparent z-10 flex items-center justify-center"
     >
       <div class="w-full h-full border-4 border-gray-400 rounded-md relative">
         <div
@@ -275,9 +275,12 @@ const triggerBallAnimation = () => {
   // const cxRatio = (x1 + x2) / 2 / 200;
   // const cyRatio = y1 / 150;
   const rim = document.getElementById('rim-line');
-  const rimRect = rim.getBoundingClientRect();
-  const centerX = rimRect.left + rimRect.width / 2;
-  const centerY = window.innerHeight - (rimRect.top + rimRect.height / 2);
+  const rimCenterX = rim.offsetLeft + rim.offsetWidth / 2;
+  const rimCenterY = rim.offsetTop + rim.offsetHeight / 2;
+  const hoopContainer = document.getElementById('hoop');
+  const hoopRect = hoopContainer.getBoundingClientRect();
+  const centerX = hoopRect.left + rimCenterX;
+  const centerY = document.documentElement.clientHeight - (hoopRect.top + rimCenterY);
 
   const totalFrames = 60;
   const peakFrame = 30;
