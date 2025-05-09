@@ -256,8 +256,10 @@ const triggerBallAnimation = () => {
   ballX.value = startX;
   ballY.value = startY;
 
-  const hoop = document.getElementById('hoop');
-  const hoopRect = hoop.getBoundingClientRect();
+  // const hoop = document.getElementById('hoop');
+  // const hoopRect = hoop.getBoundingClientRect();
+  const hoopEl = document.getElementById('hoop');
+  const hoopRect = hoopEl.getBoundingClientRect();
 
   const totalFrames = 60;
   const peakFrame = 30;
@@ -266,15 +268,25 @@ const triggerBallAnimation = () => {
   let targetX, targetY;
 
   if (isSuccess.value) {
-    targetX = hoopRect.left + (100 / 200) * hoopRect.width;
-    const targetY_px = hoopRect.top + (50 / 150) * hoopRect.height;
-    targetY = window.innerHeight - targetY_px;
+    const hoopCenterX = hoopRect.left + hoopRect.width * (100 / 200); // x=100 in SVG
+    const hoopCenterY_px = hoopRect.top + hoopRect.height * (50 / 150); // y=50 in SVG
+    targetX = hoopCenterX;
+    targetY = window.innerHeight - hoopCenterY_px;
+    // targetX = hoopRect.left + (100 / 200) * hoopRect.width;
+    // const targetY_px = hoopRect.top + (50 / 150) * hoopRect.height;
+    // targetY = window.innerHeight - targetY_px;
   } else {
     const isLeft = Math.random() < 0.5;
     const missX = isLeft ? 85 : 115;
-    targetX = hoopRect.left + (missX / 200) * hoopRect.width;
-    const targetY_px = hoopRect.top + (50 / 150) * hoopRect.height;
-    targetY = window.innerHeight - targetY_px;
+    const missX_px = hoopRect.left + hoopRect.width * (missX / 200);
+    const missY_px = hoopRect.top + hoopRect.height * (50 / 150);
+    targetX = missX_px;
+    targetY = window.innerHeight - missY_px;
+    // const isLeft = Math.random() < 0.5;
+    // const missX = isLeft ? 85 : 115;
+    // targetX = hoopRect.left + (missX / 200) * hoopRect.width;
+    // const targetY_px = hoopRect.top + (50 / 150) * hoopRect.height;
+    // targetY = window.innerHeight - targetY_px;
   }
 
   const vx = (targetX - startX) / peakFrame;
