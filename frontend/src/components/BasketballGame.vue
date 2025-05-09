@@ -8,13 +8,19 @@
     >
       Basketball Game
     </h1>
-    <div id="hoop" class="absolute top-[8vh] left-1/2 transform -translate-x-1/2 w-[28vw] max-w-[140px] h-auto z-10">
-      <svg viewBox="0 0 200 150" xmlns="http://www.w3.org/2000/svg">
-        <rect x="20" y="10" width="160" height="100" rx="8" stroke="#888" fill="none" stroke-width="6"/>
-        <rect x="70" y="30" width="60" height="40" stroke="#888" fill="none" stroke-width="4"/>
-        <line x1="60" y1="70" x2="140" y2="70" stroke="#e53e3e" stroke-width="6"/>
-        <rect x="85" y="72" width="30" height="8" fill="#555" rx="2"/>
-      </svg>
+    <div
+      id="hoop"
+      class="absolute top-[8vh] left-1/2 transform -translate-x-1/2 w-[28vw] max-w-[140px] h-[100px] bg-transparent z-10 flex items-center justify-center"
+    >
+      <div class="w-full h-full border-4 border-gray-400 rounded-md relative">
+        <div
+          id="rim-line"
+          class="absolute left-[30%] w-[40%] h-[6px] bg-red-500 top-[60%] rounded"
+        ></div>
+        <div
+          class="absolute left-[42.5%] top-[64%] w-[15%] h-[8px] bg-gray-700 rounded"
+        ></div>
+      </div>
     </div>
 
     <img
@@ -268,10 +274,11 @@ const triggerBallAnimation = () => {
   // const y1 = parseFloat(line.getAttribute('y1'));
   // const cxRatio = (x1 + x2) / 2 / 200;
   // const cyRatio = y1 / 150;
-  const line = document.querySelector('#hoop svg line');
-  const lineRect = line.getBoundingClientRect();
-  const centerX = lineRect.left + lineRect.width / 2;
-  const centerY = targetY = window.innerHeight - (lineRect.top + lineRect.height / 2);
+  const rim = document.getElementById('rim-line');
+  const rimRect = rim.getBoundingClientRect();
+  const centerX = rimRect.left + rimRect.width / 2;
+  const centerY = window.innerHeight - (rimRect.top + rimRect.height / 2);
+
   const totalFrames = 60;
   const peakFrame = 30;
   const g = 0.5;
