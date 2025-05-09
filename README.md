@@ -3,7 +3,7 @@
 A full-stack web game built with Vue.js (frontend) and Spring Boot (backend), featuring a real-time leaderboard.
 
 ## 🌐 Live Demo
-👉 [Play the game here!](https://basketball-leaderboard.netlify.app)
+👉 [Play the game here!](https://basketballgame-project.netlify.app/)
 
 ## 🚀 Tech Stack
 - **Frontend**: Vue 3 + Vite + TailwindCSS
