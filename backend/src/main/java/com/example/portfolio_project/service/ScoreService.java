@@ -29,11 +29,20 @@ public class ScoreService {
                     return oldScore;
                 }
             } else {
-                PlayerScore newScore = new PlayerScore();
-                newScore.setUsername(username);
-                newScore.setScore(score);
-                newScore.setTimestamp(LocalDateTime.now());
-                return repository.save(newScore);
+                List<PlayerScore> topScores = repository.findTop10ByOrderByScoreDescTimestampAsc();
+
+                if (topScores.size() < 10 || score > topScores.get(topScores.size() - 1).getScore()) {
+                    PlayerScore newScore = new PlayerScore();
+                    newScore.setUsername(username);
+                    newScore.setScore(score);
+                    newScore.setTimestamp(LocalDateTime.now());
+                    return repository.save(newScore);
+                }
+
+                if (score == topScores.get(topScores.size() - 1).getScore()) {
+                    return null;
+                }
+                return null;
             }
         } finally {
             lock.unlock();
@@ -41,7 +50,7 @@ public class ScoreService {
     }
 
     public List<PlayerScore> getTopScores() {
-        return repository.findTop10ScoresNative();
+        return repository.findTop10ByOrderByScoreDescTimestampAsc();
     }
 
     public void clearAllScores() {

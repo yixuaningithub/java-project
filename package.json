@@ -1,0 +1,10 @@
+{
+    "name": "fullstack-dev-runner",
+    "version": "1.0.0",
+    "scripts": {
+        "dev": "concurrently \"cd backend && ./mvnw spring-boot:run\" \"cd frontend && npm run dev\""
+    },
+    "devDependencies": {
+        "concurrently": "^8.2.2"
+    }
+}

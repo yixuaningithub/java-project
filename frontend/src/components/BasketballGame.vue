@@ -1,7 +1,7 @@
 <template>
   <div class="flex flex-col items-center justify-end h-screen bg-white relative overflow-hidden">
     <h1
-      class="absolute top-4 left-1/2 transform -translate-x-1/2 
+      class="absolute top-2 left-1/2 transform -translate-x-1/2 
             text-[clamp(1.5rem,5vw,3rem)] font-extrabold 
             bg-gradient-to-r from-orange-400 via-yellow-400 to-red-500 
             text-transparent bg-clip-text animate-gradient"
@@ -111,8 +111,8 @@
       />
 
       <button
+        v-if="!hasSubmitted"
         @click="submitScore"
-        :disabled="hasSubmitted"
         class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 mb-4"
       >
         Submit
@@ -122,16 +122,16 @@
         <h3 class="text-2xl font-bold mb-4 bg-gradient-to-r from-pink-500 via-yellow-500 to-red-500 text-transparent bg-clip-text animate-gradient">
           🏆 Leaderboard
         </h3>
-        <ul class="space-y-1 text-lg font-semibold text-gray-800">
+        <ul class="space-y-1 text-lg font-semibold text-gray-800 text-center">
           <li
             v-for="(entry, index) in leaderboard"
             :key="index"
-            class="flex justify-between px-4 py-2 bg-white bg-opacity-90 rounded shadow hover:bg-yellow-100 transition"
+            class="grid grid-cols-3 px-4 py-2 bg-white bg-opacity-90 rounded shadow hover:bg-yellow-100 transition"
           >
             <span class="font-extrabold text-xl text-indigo-600">
               #{{ index + 1 }}
             </span>
-            <span class="ml-2">{{ entry.username }}</span>
+            <span class="truncate">{{ entry.username }}</span>
             <span>{{ entry.score }}</span>
           </li>
         </ul>
@@ -325,6 +325,7 @@ const submitScore = async () => {
     const data = await res.json();
     leaderboard.value = data;
     showLeaderboard.value = true;
+    showModal.value = true;
 
   } catch (err) {
     console.error("Failed to submit or fetch scores:", err);
