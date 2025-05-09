@@ -258,15 +258,20 @@ const triggerBallAnimation = () => {
 
   // const hoop = document.getElementById('hoop');
   // const hoopRect = hoop.getBoundingClientRect();
-  const hoopSVG = document.querySelector('#hoop svg');
-  const line = hoopSVG.querySelector('line');
-  const bbox = hoopSVG.getBoundingClientRect();
 
-  const x1 = parseFloat(line.getAttribute('x1'));
-  const x2 = parseFloat(line.getAttribute('x2'));
-  const y1 = parseFloat(line.getAttribute('y1'));
-  const cxRatio = (x1 + x2) / 2 / 200;
-  const cyRatio = y1 / 150;
+  // const hoopSVG = document.querySelector('#hoop svg');
+  // const line = hoopSVG.querySelector('line');
+  // const bbox = hoopSVG.getBoundingClientRect();
+
+  // const x1 = parseFloat(line.getAttribute('x1'));
+  // const x2 = parseFloat(line.getAttribute('x2'));
+  // const y1 = parseFloat(line.getAttribute('y1'));
+  // const cxRatio = (x1 + x2) / 2 / 200;
+  // const cyRatio = y1 / 150;
+  const line = document.querySelector('#hoop svg line');
+  const lineRect = line.getBoundingClientRect();
+  const centerX = lineRect.left + lineRect.width / 2;
+  const centerY = lineRect.top + lineRect.height / 2;
 
   const totalFrames = 60;
   const peakFrame = 30;
@@ -275,16 +280,16 @@ const triggerBallAnimation = () => {
   let targetX, targetY;
 
   if (isSuccess.value) {
-    targetX = bbox.left + bbox.width * cxRatio;
-    targetY = window.innerHeight - (bbox.top + bbox.height * cyRatio);
+    targetX = centerX;
+    targetY = window.innerHeight - centerY;
     // targetX = hoopRect.left + (100 / 200) * hoopRect.width;
     // const targetY_px = hoopRect.top + (50 / 150) * hoopRect.height;
     // targetY = window.innerHeight - targetY_px;
   } else {
     const offset = 40;
     const isLeft = Math.random() < 0.5;
-    targetX = isLeft ? bbox.left + bbox.width * cxRatio - offset : bbox.left + bbox.width * cxRatio + offset;
-    targetY = window.innerHeight - (bbox.top + bbox.height * cyRatio);
+    targetX = isLeft ? centerX - offset : centerX + offset;
+    targetY = window.innerHeight - centerY;
     // const isLeft = Math.random() < 0.5;
     // const missX = isLeft ? 85 : 115;
     // targetX = hoopRect.left + (missX / 200) * hoopRect.width;
