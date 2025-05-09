@@ -9,5 +9,3 @@ frontend/dist/
 frontend/.env*
 !.env.development
 !.env.production
-backend/src/main/resources/application-*.yml
-backend/src/main/resources/application-*.properties
