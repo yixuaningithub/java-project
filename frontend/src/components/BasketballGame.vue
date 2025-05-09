@@ -16,10 +16,9 @@
         <rect x="85" y="72" width="30" height="8" fill="#555" rx="2"/>
       </svg>
     </div>
-    <div>
-      id="hoop-center"
+    <div id="hoop-center"
       class="absolute top-[12vh] left-1/2 transform -translate-x-1/2 w-4 h-4 bg-transparent z-10 pointer-events-none"
-    </div>
+    ></div>
 
     <img
       v-if="!showBall"
