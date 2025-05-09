@@ -271,8 +271,7 @@ const triggerBallAnimation = () => {
   const line = document.querySelector('#hoop svg line');
   const lineRect = line.getBoundingClientRect();
   const centerX = lineRect.left + lineRect.width / 2;
-  const centerY = lineRect.top + lineRect.height / 2;
-
+  const centerY = targetY = window.innerHeight - (lineRect.top + lineRect.height / 2);
   const totalFrames = 60;
   const peakFrame = 30;
   const g = 0.5;
