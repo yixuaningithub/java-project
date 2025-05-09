@@ -281,7 +281,7 @@ const triggerBallAnimation = () => {
 
   if (isSuccess.value) {
     targetX = centerX;
-    targetY = window.innerHeight - centerY;
+    targetY = centerY;
     // targetX = hoopRect.left + (100 / 200) * hoopRect.width;
     // const targetY_px = hoopRect.top + (50 / 150) * hoopRect.height;
     // targetY = window.innerHeight - targetY_px;
@@ -289,7 +289,7 @@ const triggerBallAnimation = () => {
     const offset = 40;
     const isLeft = Math.random() < 0.5;
     targetX = isLeft ? centerX - offset : centerX + offset;
-    targetY = window.innerHeight - centerY;
+    targetY = centerY;
     // const isLeft = Math.random() < 0.5;
     // const missX = isLeft ? 85 : 115;
     // targetX = hoopRect.left + (missX / 200) * hoopRect.width;
