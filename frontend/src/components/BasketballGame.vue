@@ -155,7 +155,7 @@ const charging = ref(false);
 const chargingDirection = ref(1);
 const powerSuccessHighlight = ref(false);
 const score = ref(0);
-const timeLeft = ref(10);
+const timeLeft = ref(20);
 const showBall = ref(false);
 const isAnimating = ref(false);
 const isSuccess = ref(false);
@@ -185,7 +185,7 @@ watch(showModal, (val) => {
 
 const startGame = () => {
   hasStarted.value = true;
-  timeLeft.value = 10;
+  timeLeft.value = 20;
   countdownInterval = setInterval(() => {
     if (timeLeft.value > 0) {
       timeLeft.value--;
@@ -339,7 +339,7 @@ const resetGame = () => {
   clearInterval(powerInterval);
 
   score.value = 0;
-  timeLeft.value = 10;
+  timeLeft.value = 20;
   power.value = 0;
   charging.value = false;
   chargingDirection.value = 1;
