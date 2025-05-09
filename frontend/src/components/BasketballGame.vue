@@ -283,8 +283,8 @@ const triggerBallAnimation = () => {
   } else {
     const offset = 40;
     const isLeft = Math.random() < 0.5;
-    targetX = isLeft ? centerX - offset : centerX + offset;
-    targetY = window.innerHeight - centerY;
+    targetX = isLeft ? bbox.left + bbox.width * cxRatio - offset : bbox.left + bbox.width * cxRatio + offset;
+    targetY = window.innerHeight - (bbox.top + bbox.height * cyRatio);
     // const isLeft = Math.random() < 0.5;
     // const missX = isLeft ? 85 : 115;
     // targetX = hoopRect.left + (missX / 200) * hoopRect.width;
