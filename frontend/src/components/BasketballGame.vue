@@ -16,9 +16,6 @@
         <rect x="85" y="72" width="30" height="8" fill="#555" rx="2"/>
       </svg>
     </div>
-    <div id="hoop-center"
-      class="absolute top-[12vh] left-1/2 transform -translate-x-1/2 w-4 h-4 bg-transparent z-10 pointer-events-none"
-    ></div>
 
     <img
       v-if="!showBall"
@@ -261,6 +258,15 @@ const triggerBallAnimation = () => {
 
   // const hoop = document.getElementById('hoop');
   // const hoopRect = hoop.getBoundingClientRect();
+  const hoopSVG = document.querySelector('#hoop svg');
+  const line = hoopSVG.querySelector('line');
+  const bbox = hoopSVG.getBoundingClientRect();
+
+  const x1 = parseFloat(line.getAttribute('x1'));
+  const x2 = parseFloat(line.getAttribute('x2'));
+  const y1 = parseFloat(line.getAttribute('y1'));
+  const cxRatio = (x1 + x2) / 2 / 200;
+  const cyRatio = y1 / 150;
 
   const totalFrames = 60;
   const peakFrame = 30;
@@ -269,20 +275,16 @@ const triggerBallAnimation = () => {
   let targetX, targetY;
 
   if (isSuccess.value) {
-    const targetEl = document.getElementById('hoop-center');
-    const targetRect = targetEl.getBoundingClientRect();
-    targetX = targetRect.left + targetRect.width / 2;
-    targetY = window.innerHeight - (targetRect.top + targetRect.height / 2);
+    targetX = bbox.left + bbox.width * cxRatio;
+    targetY = window.innerHeight - (bbox.top + bbox.height * cyRatio);
     // targetX = hoopRect.left + (100 / 200) * hoopRect.width;
     // const targetY_px = hoopRect.top + (50 / 150) * hoopRect.height;
     // targetY = window.innerHeight - targetY_px;
   } else {
+    const offset = 40;
     const isLeft = Math.random() < 0.5;
-    const missX = isLeft ? 85 : 115;
-    const missX_px = hoopRect.left + hoopRect.width * (missX / 200);
-    const missY_px = hoopRect.top + hoopRect.height * (50 / 150);
-    targetX = missX_px;
-    targetY = window.innerHeight - missY_px;
+    targetX = isLeft ? centerX - offset : centerX + offset;
+    targetY = window.innerHeight - centerY;
     // const isLeft = Math.random() < 0.5;
     // const missX = isLeft ? 85 : 115;
     // targetX = hoopRect.left + (missX / 200) * hoopRect.width;
