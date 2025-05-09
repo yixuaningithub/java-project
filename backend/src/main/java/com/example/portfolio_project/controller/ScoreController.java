@@ -11,7 +11,7 @@ import java.util.Map;
 
 @CrossOrigin(origins = {
         "http://localhost:5173",
-        "https://sparkling-granita-e2ed7d.netlify.app"
+        "https://basketballgame-project.netlify.app"
 })
 @RestController
 @RequestMapping("/api/scores")
