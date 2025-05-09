@@ -262,18 +262,6 @@ const triggerBallAnimation = () => {
   ballX.value = startX;
   ballY.value = startY;
 
-  // const hoop = document.getElementById('hoop');
-  // const hoopRect = hoop.getBoundingClientRect();
-
-  // const hoopSVG = document.querySelector('#hoop svg');
-  // const line = hoopSVG.querySelector('line');
-  // const bbox = hoopSVG.getBoundingClientRect();
-
-  // const x1 = parseFloat(line.getAttribute('x1'));
-  // const x2 = parseFloat(line.getAttribute('x2'));
-  // const y1 = parseFloat(line.getAttribute('y1'));
-  // const cxRatio = (x1 + x2) / 2 / 200;
-  // const cyRatio = y1 / 150;
   const rim = document.getElementById('rim-line');
   const rimCenterX = rim.offsetLeft + rim.offsetWidth / 2;
   const rimCenterY = rim.offsetTop + rim.offsetHeight / 2;
@@ -291,19 +279,11 @@ const triggerBallAnimation = () => {
   if (isSuccess.value) {
     targetX = centerX;
     targetY = centerY;
-    // targetX = hoopRect.left + (100 / 200) * hoopRect.width;
-    // const targetY_px = hoopRect.top + (50 / 150) * hoopRect.height;
-    // targetY = window.innerHeight - targetY_px;
   } else {
     const offset = 40;
     const isLeft = Math.random() < 0.5;
     targetX = isLeft ? centerX - offset : centerX + offset;
     targetY = centerY;
-    // const isLeft = Math.random() < 0.5;
-    // const missX = isLeft ? 85 : 115;
-    // targetX = hoopRect.left + (missX / 200) * hoopRect.width;
-    // const targetY_px = hoopRect.top + (50 / 150) * hoopRect.height;
-    // targetY = window.innerHeight - targetY_px;
   }
 
   const vx = (targetX - startX) / peakFrame;
