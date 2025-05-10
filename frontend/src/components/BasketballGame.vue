@@ -47,12 +47,12 @@
         transform: 'translate(-50%, 0)'
       }"
     />
-    <div
-      id="ball-origin"
-      class="absolute w-1 h-1 top-0 left-1/2 transform -translate-x-1/2"
-      ref="ballOriginRef"
-    ></div>
     <div class="w-full max-w-md flex flex-col items-center mb-8 z-20">
+      <div
+        id="ball-origin"
+        ref="ballOriginRef"
+        class="w-1 h-1 bg-transparent"
+      ></div>
       <div class="w-full h-6 bg-gray-200 rounded-full border border-gray-400 shadow-inner mb-2">
         <div
           class="h-full rounded-full transition-all duration-75"
@@ -371,7 +371,7 @@ onMounted(() => {
     if (originEl) {
       const originRect = originEl.getBoundingClientRect();
       staticBallX.value = originRect.left + originRect.width / 2;
-      staticBallY.value = window.innerHeight - (originRect.top + originRect.height / 2);
+      staticBallY.value = window.innerHeight - originRect.top + 10;
     }
     // const btn = document.querySelector(".rounded-full.text-xl");
     // if (btn) {
