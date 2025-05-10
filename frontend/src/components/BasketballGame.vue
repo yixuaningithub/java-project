@@ -45,11 +45,6 @@
     <div class="w-full max-w-md flex flex-col items-center mb-8 z-20">
       <div class="w-full h-6 bg-gray-200 rounded-full border border-gray-400 shadow-inner mb-2">
         <div
-          id="ball-origin"
-          ref="ballOriginRef"
-          class="w-1 h-1 bg-transparent"
-        ></div>
-        <div
           class="h-full rounded-full transition-all duration-75"
           :style="{
             width: power + '%',
@@ -270,17 +265,33 @@ const triggerBallAnimation = () => {
 
   let targetX, targetY;
 
+  const rimLine = hoop.querySelector('line');
+  let rimRect;
+  rimRect = rimLine.getBoundingClientRect();
+
   if (isSuccess.value) {
-    targetX = hoopRect.left + (100 / 200) * hoopRect.width;
-    const targetY_px = hoopRect.top + (50 / 150) * hoopRect.height;
-    targetY = window.innerHeight - targetY_px;
+    // Calculate the center of the rim line in viewport coordinates
+    targetX = rimRect.left + rimRect.width / 2;
+    targetY = rimRect.top + rimRect.height / 2;
   } else {
+    // Calculate miss positions relative to the rim center
+    const missOffset = hoopRect.width * 0.15; // Adjust for desired miss distance
     const isLeft = Math.random() < 0.5;
-    const missX = isLeft ? 85 : 115;
-    targetX = hoopRect.left + (missX / 200) * hoopRect.width;
-    const targetY_px = hoopRect.top + (50 / 150) * hoopRect.height;
-    targetY = window.innerHeight - targetY_px;
+    targetX = rimRect.left + rimRect.width / 2 + (isLeft ? -missOffset : missOffset);
+    targetY = rimRect.top + rimRect.height; // Aim slightly below the rim for a miss
   }
+
+  // if (isSuccess.value) {
+  //   targetX = hoopRect.left + (100 / 200) * hoopRect.width;
+  //   const targetY_px = hoopRect.top + (50 / 150) * hoopRect.height;
+  //   targetY = window.innerHeight - targetY_px;
+  // } else {
+  //   const isLeft = Math.random() < 0.5;
+  //   const missX = isLeft ? 85 : 115;
+  //   targetX = hoopRect.left + (missX / 200) * hoopRect.width;
+  //   const targetY_px = hoopRect.top + (50 / 150) * hoopRect.height;
+  //   targetY = window.innerHeight - targetY_px;
+  // }
 
   const vx = (targetX - startX) / peakFrame;
   const vy = (targetY - startY) / peakFrame + 0.5 * g * peakFrame;
@@ -364,17 +375,11 @@ const loadLeaderboard = async () => {
 const ballOriginRef = ref(null);
 onMounted(() => {
   nextTick(() => {
-    // const btn = document.querySelector(".rounded-full.text-xl");
-    // if (btn) {
-    //   const rect = btn.getBoundingClientRect();
-    //   staticBallX.value = rect.left + rect.width / 2;
-    //   staticBallY.value = window.innerHeight - rect.top + 30;
-    // }
-    const originEl = ballOriginRef.value;
-    if (originEl) {
-      const originRect = originEl.getBoundingClientRect();
-      staticBallX.value = originRect.left + originRect.width / 2;
-      staticBallY.value = window.innerHeight - (originRect.top + originRect.height / 2) + 10;
+    const btn = document.querySelector(".rounded-full.text-xl");
+    if (btn) {
+      const rect = btn.getBoundingClientRect();
+      staticBallX.value = rect.left + rect.width / 2;
+      staticBallY.value = window.innerHeight - rect.top + 30;
     }
   });
   loadLeaderboard();
