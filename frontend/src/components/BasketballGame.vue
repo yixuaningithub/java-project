@@ -267,18 +267,24 @@ const triggerBallAnimation = () => {
 
   const rimLine = hoop.querySelector('line');
   let rimRect;
-  rimRect = rimLine.getBoundingClientRect();
+  if (rimLine) {
+    rimRect = rimLine.getBoundingClientRect();
+  } else {
+    console.error("Rim line element not found in SVG.");
+    return; // Exit if the rim line isn't there
+  }
 
   if (isSuccess.value) {
-    // Calculate the center of the rim line in viewport coordinates
+    // Calculate the horizontal center of the rim line
     targetX = rimRect.left + rimRect.width / 2;
-    targetY = rimRect.top + rimRect.height / 2;
+    // Calculate the vertical center of the rim line and adjust for the ball's height
+    targetY = rimRect.top + rimRect.height / 2 + ballHeight / 2;
   } else {
     // Calculate miss positions relative to the rim center
     const missOffset = hoopRect.width * 0.15; // Adjust for desired miss distance
     const isLeft = Math.random() < 0.5;
     targetX = rimRect.left + rimRect.width / 2 + (isLeft ? -missOffset : missOffset);
-    targetY = rimRect.top + rimRect.height; // Aim slightly below the rim for a miss
+    targetY = rimRect.top + rimRect.height + ballHeight / 4; // Aim slightly below the rim for a miss, with some ball offset
   }
 
   // if (isSuccess.value) {
