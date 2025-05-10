@@ -47,7 +47,11 @@
         transform: 'translate(-50%, 0)'
       }"
     />
-
+    <div
+      id="ball-origin"
+      class="absolute w-1 h-1 top-0 left-1/2 transform -translate-x-1/2"
+      ref="ballOriginRef"
+    ></div>
     <div class="w-full max-w-md flex flex-col items-center mb-8 z-20">
       <div class="w-full h-6 bg-gray-200 rounded-full border border-gray-400 shadow-inner mb-2">
         <div
@@ -263,14 +267,9 @@ const triggerBallAnimation = () => {
   ballY.value = startY;
 
   const rim = document.getElementById('rim-line');
-  const rimCenterX = rim.offsetLeft + rim.offsetWidth / 2;
-  const rimCenterY = rim.offsetTop + rim.offsetHeight / 2;
-  const hoopContainer = document.getElementById('hoop');
-  const hoopRect = hoopContainer.getBoundingClientRect();
-  const centerX = hoopRect.left + rimCenterX;
-  const centerY = document.documentElement.clientHeight - (hoopRect.top + rimCenterY);
-
-  const totalFrames = 60;
+  const rimRect = rim.getBoundingClientRect();
+  const centerX = rimRect.left + rimRect.width / 2;
+  const centerY = window.innerHeight - (rimRect.top + rimRect.height / 2);
   const peakFrame = 30;
   const g = 0.5;
 
@@ -365,15 +364,21 @@ const loadLeaderboard = async () => {
     console.error("Failed to load leaderboard:", err);
   }
 };
-
+const ballOriginRef = ref(null);
 onMounted(() => {
   nextTick(() => {
-    const btn = document.querySelector(".rounded-full.text-xl");
-    if (btn) {
-      const rect = btn.getBoundingClientRect();
-      staticBallX.value = rect.left + rect.width / 2;
-      staticBallY.value = window.innerHeight - rect.top + 30;
+    const originEl = ballOriginRef.value;
+    if (originEl) {
+      const originRect = originEl.getBoundingClientRect();
+      staticBallX.value = originRect.left + originRect.width / 2;
+      staticBallY.value = window.innerHeight - (originRect.top + originRect.height / 2);
     }
+    // const btn = document.querySelector(".rounded-full.text-xl");
+    // if (btn) {
+    //   const rect = btn.getBoundingClientRect();
+    //   staticBallX.value = rect.left + rect.width / 2;
+    //   staticBallY.value = window.innerHeight - rect.top + 30;
+    // }
   });
   loadLeaderboard();
 });
