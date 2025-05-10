@@ -265,39 +265,17 @@ const triggerBallAnimation = () => {
 
   let targetX, targetY;
 
-  const rimLine = hoop.querySelector('line');
-  let rimRect;
-  if (rimLine) {
-    rimRect = rimLine.getBoundingClientRect();
-  } else {
-    console.error("Rim line element not found in SVG.");
-    return; // Exit if the rim line isn't there
-  }
-
   if (isSuccess.value) {
-    // Calculate the horizontal center of the rim line
-    targetX = rimRect.left + rimRect.width / 2;
-    // Calculate the vertical center of the rim line and adjust for the ball's height
-    targetY = rimRect.top + rimRect.height / 2 + ballHeight / 2;
+    targetX = hoopRect.left + (100 / 200) * hoopRect.width;
+    const targetY_px = hoopRect.top + (50 / 150) * hoopRect.height;
+    targetY = window.innerHeight - targetY_px;
   } else {
-    // Calculate miss positions relative to the rim center
-    const missOffset = hoopRect.width * 0.15; // Adjust for desired miss distance
     const isLeft = Math.random() < 0.5;
-    targetX = rimRect.left + rimRect.width / 2 + (isLeft ? -missOffset : missOffset);
-    targetY = rimRect.top + rimRect.height + ballHeight / 4; // Aim slightly below the rim for a miss, with some ball offset
+    const missX = isLeft ? 85 : 115;
+    targetX = hoopRect.left + (missX / 200) * hoopRect.width;
+    const targetY_px = hoopRect.top + (50 / 150) * hoopRect.height;
+    targetY = window.innerHeight - targetY_px;
   }
-
-  // if (isSuccess.value) {
-  //   targetX = hoopRect.left + (100 / 200) * hoopRect.width;
-  //   const targetY_px = hoopRect.top + (50 / 150) * hoopRect.height;
-  //   targetY = window.innerHeight - targetY_px;
-  // } else {
-  //   const isLeft = Math.random() < 0.5;
-  //   const missX = isLeft ? 85 : 115;
-  //   targetX = hoopRect.left + (missX / 200) * hoopRect.width;
-  //   const targetY_px = hoopRect.top + (50 / 150) * hoopRect.height;
-  //   targetY = window.innerHeight - targetY_px;
-  // }
 
   const vx = (targetX - startX) / peakFrame;
   const vy = (targetY - startY) / peakFrame + 0.5 * g * peakFrame;
