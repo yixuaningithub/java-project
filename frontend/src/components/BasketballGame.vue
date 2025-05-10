@@ -45,6 +45,11 @@
     <div class="w-full max-w-md flex flex-col items-center mb-8 z-20">
       <div class="w-full h-6 bg-gray-200 rounded-full border border-gray-400 shadow-inner mb-2">
         <div
+          id="ball-origin"
+          ref="ballOriginRef"
+          class="w-1 h-1 bg-transparent"
+        ></div>
+        <div
           class="h-full rounded-full transition-all duration-75"
           :style="{
             width: power + '%',
@@ -356,14 +361,20 @@ const loadLeaderboard = async () => {
     console.error("Failed to load leaderboard:", err);
   }
 };
-
+const ballOriginRef = ref(null);
 onMounted(() => {
   nextTick(() => {
-    const btn = document.querySelector(".rounded-full.text-xl");
-    if (btn) {
-      const rect = btn.getBoundingClientRect();
-      staticBallX.value = rect.left + rect.width / 2;
-      staticBallY.value = window.innerHeight - rect.top + 30;
+    // const btn = document.querySelector(".rounded-full.text-xl");
+    // if (btn) {
+    //   const rect = btn.getBoundingClientRect();
+    //   staticBallX.value = rect.left + rect.width / 2;
+    //   staticBallY.value = window.innerHeight - rect.top + 30;
+    // }
+    const originEl = ballOriginRef.value;
+    if (originEl) {
+      const originRect = originEl.getBoundingClientRect();
+      staticBallX.value = originRect.left + originRect.width / 2;
+      staticBallY.value = window.innerHeight - (originRect.top + originRect.height / 2) + 10;
     }
   });
   loadLeaderboard();
