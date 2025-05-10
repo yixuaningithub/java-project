@@ -8,19 +8,13 @@
     >
       Basketball Game
     </h1>
-    <div
-      id="hoop"
-      class="absolute top-[80px] left-1/2 transform -translate-x-1/2 w-[28vw] max-w-[140px] h-[100px] bg-transparent z-10 flex items-center justify-center"
-    >
-      <div class="w-full h-full border-4 border-gray-400 rounded-md relative">
-        <div
-          id="rim-line"
-          class="absolute left-[30%] w-[40%] h-[6px] bg-red-500 top-[60%] rounded"
-        ></div>
-        <div
-          class="absolute left-[42.5%] top-[64%] w-[15%] h-[8px] bg-gray-700 rounded"
-        ></div>
-      </div>
+    <div id="hoop" class="absolute top-[8vh] left-1/2 transform -translate-x-1/2 w-[28vw] max-w-[140px] h-auto z-10">
+      <svg viewBox="0 0 200 150" xmlns="http://www.w3.org/2000/svg">
+        <rect x="20" y="10" width="160" height="100" rx="8" stroke="#888" fill="none" stroke-width="6"/>
+        <rect x="70" y="30" width="60" height="40" stroke="#888" fill="none" stroke-width="4"/>
+        <line x1="60" y1="70" x2="140" y2="70" stroke="#e53e3e" stroke-width="6"/>
+        <rect x="85" y="72" width="30" height="8" fill="#555" rx="2"/>
+      </svg>
     </div>
 
     <img
@@ -47,12 +41,8 @@
         transform: 'translate(-50%, 0)'
       }"
     />
+
     <div class="w-full max-w-md flex flex-col items-center mb-8 z-20">
-      <div
-        id="ball-origin"
-        ref="ballOriginRef"
-        class="w-1 h-1 bg-transparent"
-      ></div>
       <div class="w-full h-6 bg-gray-200 rounded-full border border-gray-400 shadow-inner mb-2">
         <div
           class="h-full rounded-full transition-all duration-75"
@@ -266,23 +256,25 @@ const triggerBallAnimation = () => {
   ballX.value = startX;
   ballY.value = startY;
 
-  const rim = document.getElementById('rim-line');
-  const rimRect = rim.getBoundingClientRect();
-  const centerX = rimRect.left + rimRect.width / 2;
-  const centerY = window.innerHeight - (rimRect.top + rimRect.height / 2);
+  const hoop = document.getElementById('hoop');
+  const hoopRect = hoop.getBoundingClientRect();
+
+  const totalFrames = 60;
   const peakFrame = 30;
   const g = 0.5;
 
   let targetX, targetY;
 
   if (isSuccess.value) {
-    targetX = centerX;
-    targetY = centerY;
+    targetX = hoopRect.left + (100 / 200) * hoopRect.width;
+    const targetY_px = hoopRect.top + (50 / 150) * hoopRect.height;
+    targetY = window.innerHeight - targetY_px;
   } else {
-    const offset = 40;
     const isLeft = Math.random() < 0.5;
-    targetX = isLeft ? centerX - offset : centerX + offset;
-    targetY = centerY;
+    const missX = isLeft ? 85 : 115;
+    targetX = hoopRect.left + (missX / 200) * hoopRect.width;
+    const targetY_px = hoopRect.top + (50 / 150) * hoopRect.height;
+    targetY = window.innerHeight - targetY_px;
   }
 
   const vx = (targetX - startX) / peakFrame;
@@ -364,21 +356,15 @@ const loadLeaderboard = async () => {
     console.error("Failed to load leaderboard:", err);
   }
 };
-const ballOriginRef = ref(null);
+
 onMounted(() => {
   nextTick(() => {
-    const originEl = ballOriginRef.value;
-    if (originEl) {
-      const originRect = originEl.getBoundingClientRect();
-      staticBallX.value = originRect.left + originRect.width / 2;
-      staticBallY.value = window.innerHeight - originRect.top + 10;
+    const btn = document.querySelector(".rounded-full.text-xl");
+    if (btn) {
+      const rect = btn.getBoundingClientRect();
+      staticBallX.value = rect.left + rect.width / 2;
+      staticBallY.value = window.innerHeight - rect.top + 30;
     }
-    // const btn = document.querySelector(".rounded-full.text-xl");
-    // if (btn) {
-    //   const rect = btn.getBoundingClientRect();
-    //   staticBallX.value = rect.left + rect.width / 2;
-    //   staticBallY.value = window.innerHeight - rect.top + 30;
-    // }
   });
   loadLeaderboard();
 });
